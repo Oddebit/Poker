@@ -7,39 +7,39 @@ import java.util.ArrayList;
 
 public class Terminal {
 
-    public static void sayStraightFlush(int value) {
+    public static void sayStraightFlush(String face) {
 
-        System.out.println("You got a " + value + "-high straight flush.");
+        System.out.println("You got a " + face + "-high straight flush.");
     }
 
-    public static void sayFourOfAKind(int value) {
+    public static void sayFourOfAKind(String face) {
 
-        System.out.println("You got four of a kind, " + value + "'s.");
+        System.out.println("You got four of a kind, " + face + "'s.");
     }
 
-    public static void sayFullHouse(int value1, int value2) {
+    public static void sayFullHouse(String face1, String face2) {
 
-        System.out.println("You got a full house, " + value1 + "'s over " + value2 + "'s.");
+        System.out.println("You got a full house, " + face1 + "'s over " + face2 + "'s.");
     }
 
-    public static void sayFlush(String face) {
+    public static void sayFlush(String suit) {
 
-        System.out.println("You got a " + face + " flush.");
+        System.out.println("You got a " + suit + " flush.");
     }
 
-    public static void sayStraight(int value) {
+    public static void sayStraight(String face) {
 
-        System.out.println("You got a " + value + "-high straight.");
+        System.out.println("You got a " + face + "-high straight.");
     }
 
-    public static void sayThreeOfAKind(int value) {
+    public static void sayThreeOfAKind(String face) {
 
-        System.out.println("You got three of a kind, " + value + "'s.");
+        System.out.println("You got three of a kind, " + face + "'s.");
     }
 
-    public static void sayPairs(int value) {
+    public static void sayPairs(String face) {
 
-        System.out.println("You got a pair of " + value + "'s .");
+        System.out.println("You got a pair of " + face + "'s .");
     }
 
     public static void sayNothing() {
