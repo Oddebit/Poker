@@ -32,6 +32,10 @@ public class Card {
         return card;
     }
 
+    public String getSuit() {
+        return suit;
+    }
+
 
     private void setSuit(int suit) {
 
