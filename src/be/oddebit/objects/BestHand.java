@@ -1,7 +1,5 @@
 package be.oddebit.objects;
 
-import be.oddebit.objects.Card;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,7 +11,7 @@ public class BestHand {
 
     public BestHand() {
 
-        this.commonHand= new int[5][14];
+        this.commonHand = new int[5][14];
         this.bestHand = new ArrayList<>();
 
         generateHand();
@@ -25,13 +23,25 @@ public class BestHand {
     private void generateHand() {
 
         Random random = new Random();
+//
+//        for (int i = 0; i < 7; i++) {
+//            int x = random.nextInt(4);
+//            int y = random.nextInt(13);
+//
+//            commonHand[x][y] = 1;
+//        }
 
-        for (int i = 0; i < 7; i++) {
-            int x = random.nextInt(4);
-            int y = random.nextInt(13);
 
-            commonHand[x][y] = 1;
-        }
+
+        commonHand[2][3] = 1;
+        commonHand[3][3] = 1;
+        commonHand[1][3] = 1;
+        commonHand[2][8] = 1;
+        commonHand[3][8] = 1;
+        commonHand[1][9] = 1;
+        commonHand[2][9] = 1;
+
+
     }
 
 
@@ -50,14 +60,13 @@ public class BestHand {
     }
 
     public void setBestHand() {
-        fourOfAKind();
-        threeOfAKind();
-        pair();
 
-        while(bestHand.size() <= 5) {
-            highCard();
-        }
-
+        addFourOfAKind(checkFourOfAKind());
+        addFullHouse(checkFullHouse());
+        addFlush(checkFlush());
+        addThreeOfAKind(checkThreeOfAKind());
+        addPairs(checkPairs());
+        addHighCard();
     }
 
     public int[][] getCommonHand() {
@@ -68,78 +77,189 @@ public class BestHand {
         return bestHand;
     }
 
-    public ArrayList<String> getBestHandFaces() {
+    public ArrayList<String> getBestHandCards() {
 
-        ArrayList<String> face = new ArrayList<>();
+        ArrayList<String> cards = new ArrayList<>();
 
         for (Card card : bestHand) {
-            face.add(card.getFace());
+            cards.add(card.getCard());
         }
 
-        return face;
+        return cards;
+    }
+
+    public ArrayList<String> getCommonHandCards() {
+
+        ArrayList<String> cards = new ArrayList<>();
+
+        for (int i = 12; i >= 0; i--) {
+
+            for (int j = 0; j < 4; j++) {
+
+                if (commonHand[j][i] == 1) {
+
+                    cards.add(0, new Card(i + 1, j + 1).getCard());
+                }
+            }
+        }
+
+        return cards;
     }
 
 
-    public boolean fourOfAKind() {
+    // FOUR OF A KIND
+    public int checkFourOfAKind() {
 
-        for (int i = 12; i >= 0; i--) {
-            if (commonHand[4][i] == 4) {
-                for (int j = 0; j < 4; j++) {
-                    bestHand.add(0, new Card(i + 1, j + 1));
+        if (bestHand.size() < 5) {
+
+            for (int i = 12; i >= 0; i--) {
+
+                if (commonHand[4][i] == 4) {
+
+                    return i;
                 }
-
-                return true;
             }
         }
+
+        return -1;
+    }
+
+    public void addFourOfAKind(int index) {
+
+        if (index != -1) {
+
+            for (int j = 0; j < 4; j++) {
+
+                bestHand.add(0, new Card(index + 1, j + 1));
+            }
+        }
+    }
+
+
+    // FULL HOUSE
+    public boolean checkFullHouse() {
+
+        if (checkThreeOfAKind() != -1 && checkPairs().size() > 0) return true;
 
         return false;
     }
 
-    public boolean threeOfAKind() {
+    public void addFullHouse(boolean fullHouse) {
 
-        for (int i = 12; i >= 0; i--) {
+        if (fullHouse) {
 
-            if (commonHand[4][i] == 3) {
+            addThreeOfAKind(checkThreeOfAKind());
+            addPairs(checkPairs());
+        }
+    }
 
-                for (int j = 0; j < 4; j++) {
 
-                    if (commonHand[j][i] == 1) {
+    // FLUSH
+    public int checkFlush() {
 
-                        bestHand.add(0, new Card(i + 1, j + 1));
-                        return true;
-                    }
+        if (bestHand.size() < 5) {
+
+            for (int j = 0; j < 4; j++) {
+
+                if (commonHand[j][13] >= 5) {
+
+                    return j;
                 }
             }
         }
 
-        return false;
+        return -1;
     }
 
-    public int pair() {
+    public void addFlush(int index) {
 
-        int count = 0;
-        for (int i = 12; i >= 0; i--) {
+        if (index != -1) {
 
-            if (commonHand[4][i] == 2 && count <= 2) {
+            int i = 12;
+            while (bestHand.size() < 5) {
 
-                count += 1;
-                for (int j = 0; j < 4; j++) {
+                if (commonHand[index][i] == 1) {
 
-                    if (commonHand[j][i] == 1) {
+                    bestHand.add(0, new Card(i + 1, index + 1));
+                }
+                i--;
+            }
+        }
+    }
 
-                        bestHand.add(bestHand.size(), new Card(i + 1, j + 1));
 
-                    }
+    // THREE OF A KIND
+    public int checkThreeOfAKind() {
+
+        if (bestHand.size() <= 2) {
+
+            for (int i = 12; i >= 0; i--) {
+
+                if (commonHand[4][i] == 3) {
+
+                    return i;
                 }
             }
         }
 
-        return count;
+        return -1;
     }
 
-    public void highCard() {
+    public void addThreeOfAKind(int index) {
+
+        if (index != -1) {
+
+            for (int j = 0; j < 4; j++) {
+
+                if (commonHand[j][index] == 1) {
+
+                    bestHand.add(0, new Card(index + 1, j + 1));
+
+                }
+            }
+        }
+    }
+
+    // PAIR
+    public ArrayList<Integer> checkPairs() {
+
+        ArrayList<Integer> pairs = new ArrayList<>();
 
         for (int i = 12; i >= 0; i--) {
+
+            if (commonHand[4][i] == 2) {
+
+                pairs.add(pairs.size(), i);
+            }
+        }
+
+        return pairs;
+    }
+
+    public void addPairs(ArrayList<Integer> indexes) {
+
+        int i = 0;
+
+        while (i <= indexes.size() && bestHand.size() <= 3) {
+
+            for (int j = 0; j < 4; j++) {
+
+                if (commonHand[j][indexes.get(i)] == 1) {
+
+                    bestHand.add(0, new Card(indexes.get(i) + 1, j + 1));
+                }
+            }
+
+            i++;
+        }
+    }
+
+
+    public void addHighCard() {
+
+        int i = 12;
+
+        while (bestHand.size() < 5 && i >= 0) {
 
             if (commonHand[4][i] == 1) {
 
@@ -152,6 +272,9 @@ public class BestHand {
                     }
                 }
             }
+
+            i--;
         }
     }
 }
+

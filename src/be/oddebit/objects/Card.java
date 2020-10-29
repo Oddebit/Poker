@@ -2,9 +2,12 @@ package be.oddebit.objects;
 
 public class Card {
 
-    private String face;
     private int value;
+
+    private String face;
     private String suit;
+
+    private String card;
 
 
     public Card(int value, int suit) {
@@ -12,6 +15,7 @@ public class Card {
         this.value = value;
         setFace(value);
         setSuit(suit);
+        setCard(this.face, this.suit);
 
     }
 
@@ -24,25 +28,29 @@ public class Card {
         return face;
     }
 
+    public String getCard() {
+        return card;
+    }
+
 
     private void setSuit(int suit) {
 
         switch (suit) {
 
             case 1:
-                this.suit = "hearts";
+                this.suit = "(H)";
                 break;
 
             case 2:
-                this.suit = "diamonds";
+                this.suit = "(D)";
                 break;
 
             case 3:
-                this.suit = "clubs";
+                this.suit = "(C)";
                 break;
 
             case 4:
-                this.suit = "spades";
+                this.suit = "(S)";
                 break;
         }
 
@@ -72,5 +80,10 @@ public class Card {
                 face = String.valueOf(number);
                 break;
         }
+    }
+
+    private void setCard(String face, String suit) {
+
+        this.card = face + suit;
     }
 }

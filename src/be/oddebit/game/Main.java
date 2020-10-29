@@ -14,10 +14,10 @@ public class Main {
             System.out.println(Arrays.toString(nums));
         }
 
-        System.out.println("Best hand : " + bestHand.getBestHandFaces());
-        System.out.println("Pairs : " + bestHand.pair());
-        System.out.println("Three of a kind : " + bestHand.threeOfAKind());
-        System.out.println("Four of a kind : " + bestHand.fourOfAKind());
+        System.out.println();
+        System.out.println("Common hand : " + bestHand.getCommonHandCards());
+        System.out.println("Best hand : " + bestHand.getBestHandCards());
+
 
     }
 
