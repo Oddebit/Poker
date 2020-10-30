@@ -19,17 +19,12 @@ public class Card {
 
     }
 
-
-    public int getValue() {
-        return value;
+    public String getCard() {
+        return card;
     }
 
     public String getFace() {
         return face;
-    }
-
-    public String getCard() {
-        return card;
     }
 
     public String getSuit() {

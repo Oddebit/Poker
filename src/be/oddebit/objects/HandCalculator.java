@@ -3,71 +3,59 @@ package be.oddebit.objects;
 import be.oddebit.UserInterface.Terminal;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class HandCalculator {
 
     private int[][] gameBoard;
+
+    Table table;
+    Player dealer;
+
+    Player player;
     private ArrayList<Card> bestHand;
 
 
-    public HandCalculator() {
+    public HandCalculator(Table table, Player player) {
 
         this.gameBoard = new int[5][14];
         this.bestHand = new ArrayList<>();
 
-        generateHand();
-        sum();
+        this.table = table;
+        this.player = player;
+        this.dealer = table.dealer;
+
+
+        boardTranslation();
 
         setBestHand();
     }
 
-    private void generateHand() {
 
-        Random random = new Random();
+    private void boardTranslation() {
 
-        for (int i = 0; i < 7; i++) {
+        for (int s = 0; s < 4; s++) {
 
-            boolean occupied = true;
-            while (occupied){
-                int x = random.nextInt(4);
-                int y = random.nextInt(13);
+            for (int v = 0; v < 13; v++) {
 
-                if (gameBoard[x][y] != 1) {
-                    gameBoard[x][y] = 1;
-                    occupied = false;
+                if(isPlayersCard(s, v)) {
+
+                    gameBoard[s][v] += 1;
+                    gameBoard[s][13] += 1;
+                    gameBoard[4][v] += 1;
                 }
             }
-
-        }
-
-
-
-//        gameBoard[0][3] = 1;
-//        gameBoard[0][4] = 1;
-//        gameBoard[0][5] = 1;
-//        gameBoard[0][6] = 1;
-//        gameBoard[0][7] = 1;
-//        gameBoard[0][9] = 1;
-//        gameBoard[1][9] = 1;
-
-
-    }
-
-
-    private void sum() {
-
-        for (int i = 0; i < 4; i++) {
-
-            for (int j = 0; j < 13; j++) {
-
-                gameBoard[i][13] += gameBoard[i][j];
-                gameBoard[4][j] += gameBoard[i][j];
-                gameBoard[4][13] += gameBoard[i][j];
-            }
         }
 
     }
+
+    private boolean isPlayersCard(int suit, int value) {
+
+        if (this.table.getGameBoard()[suit][value] == null) return false;
+
+        return this.table.getGameBoard()[suit][value].equals(this.player.getName())
+                || this.table.getGameBoard()[suit][value].equals(this.dealer.getName());
+    }
+
 
     public void setBestHand() {
 
@@ -79,43 +67,8 @@ public class HandCalculator {
         addThreeOfAKind(checkThreeOfAKind());
         addPairs(checkPairs());
         addHighCard();
-    }
 
-    public int[][] getGameBoard() {
-        return gameBoard;
-    }
-
-    public ArrayList<Card> getBestHand() {
-        return bestHand;
-    }
-
-    public ArrayList<String> getBestHandCards() {
-
-        ArrayList<String> cards = new ArrayList<>();
-
-        for (Card card : bestHand) {
-            cards.add(card.getCard());
-        }
-
-        return cards;
-    }
-
-    public ArrayList<String> getCommonHandCards() {
-
-        ArrayList<String> cards = new ArrayList<>();
-
-        for (int v = 12; v >= 0; v--) {
-
-            for (int s = 0; s < 4; s++) {
-
-                if (gameBoard[s][v] == 1) {
-
-                    cards.add(0, new Card(v + 1, s + 1).getCard());
-                }
-            }
-        }
-
-        return cards;
+        player.setBestHand(bestHand);
     }
 
 
@@ -153,7 +106,7 @@ public class HandCalculator {
 
         if (value != -1) {
 
-            Terminal.sayStraightFlush(new Card(value + 1, 0).getFace());
+            Terminal.sayStraightFlush(player, new Card(value + 1, 0).getFace());
 
             for (int v = value; v >= value - 4; v--) {
 
@@ -190,7 +143,7 @@ public class HandCalculator {
 
         if (value != -1) {
 
-            Terminal.sayFourOfAKind(new Card(value + 1, 0).getFace());
+            Terminal.sayFourOfAKind(player, new Card(value + 1, 0).getFace());
 
             for (int s = 0; s < 4; s++) {
 
@@ -202,8 +155,6 @@ public class HandCalculator {
 
     // FULL HOUSE
     public int[] checkFullHouse() {
-
-        int[] fullHouse;
 
         int threeOfAKind = checkThreeOfAKind();
         int pair = checkPairs().size() > 0 ? checkPairs().get(0) : -1;
@@ -221,7 +172,7 @@ public class HandCalculator {
 
             addThreeOfAKind(values[0]);
             addPairs(checkPairs());
-            Terminal.sayFullHouse(new Card(values[0] + 1, 0).getFace(), new Card(values[1] + 1, 0).getFace());
+            Terminal.sayFullHouse(player, new Card(values[0] + 1, 0).getFace(), new Card(values[1] + 1, 0).getFace());
         }
     }
 
@@ -247,7 +198,7 @@ public class HandCalculator {
 
         if (suit != -1) {
 
-            Terminal.sayFlush(new Card(0, suit + 1).getSuit());
+            Terminal.sayFlush(player, new Card(0, suit + 1).getSuit());
 
             int v = 12;
             while (bestHand.size() < 5) {
@@ -296,7 +247,7 @@ public class HandCalculator {
 
         if (value != -1) {
 
-            Terminal.sayStraight(new Card(value + 1, 0).getFace());
+            Terminal.sayStraight(player, new Card(value + 1, 0).getFace());
 
             for (int v = value; v >= value - 4; v--) {
 
@@ -333,7 +284,7 @@ public class HandCalculator {
 
         if (value != -1) {
 
-            Terminal.sayThreeOfAKind(new Card(value + 1, 0).getFace());
+            Terminal.sayThreeOfAKind(player, new Card(value + 1, 0).getFace());
 
             for (int s = 0; s < 4; s++) {
 
@@ -369,7 +320,7 @@ public class HandCalculator {
 
         while (i < values.size() && bestHand.size() <= 3) {
 
-            Terminal.sayPairs(new Card(values.get(i) + 1, 0).getFace());
+            Terminal.sayPairs(player, new Card(values.get(i) + 1, 0).getFace());
 
             for (int s = 0; s < 4; s++) {
 

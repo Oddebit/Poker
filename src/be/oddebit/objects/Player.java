@@ -5,32 +5,37 @@ import java.util.Arrays;
 
 public class Player {
 
-    private ArrayList<Card> ownHand;
-    private ArrayList<Card> commonHand;
+    private ArrayList<Card> hand;
+
     private final String name;
     private int stack;
     private int bet;
+
+    private ArrayList<Card> bestHand;
 
 
     public Player(String name) {
 
         this.name = name;
+        this.hand = new ArrayList<>();
+        this.stack = 5000;
+    }
+
+    public void clearHand() {
+
+        this.hand.clear();
     }
 
 
+// SETTERS
     public void setStack(int stack) {
 
         this.stack = stack;
     }
 
-    public void receivesCards(Card... cards) {
+    public void receivesCard(Card card) {
 
-        this.ownHand.addAll(Arrays.asList(cards));
-    }
-
-    public void receivesBet(int factor) {
-
-        this.stack += bet * factor;
+        this.hand.add(card);
     }
 
     public void setBet(int bet) {
@@ -38,24 +43,44 @@ public class Player {
         this.bet = bet;
     }
 
-    public void setCommonHand(Table table) {
-        this.ownHand.addAll(table.getCommonCards());
+    public void setBestHand(ArrayList<Card> bestHand) {
+        this.bestHand = bestHand;
     }
 
-
+    // GETTERS
     public int getStack() {
 
         return stack;
     }
 
-    public Card getCard(int index) {
-        return ownHand.get(index);
+    public int getBet() {
+
+        return bet;
     }
 
+    public ArrayList<String> getHand() {
 
-    public ArrayList<Card> getCommonHand(Table table) {
-        return this.commonHand;
+        ArrayList<String> hand = new ArrayList<>();
+
+        for (Card card : this.hand) {
+
+            hand.add(card.getCard());
+        }
+
+        return hand;
     }
+
+    public ArrayList<String> getHandFaces() {
+
+        ArrayList<String> face = new ArrayList<>();
+
+        for (Card card : hand) {
+            face.add(card.getFace());
+        }
+
+        return face;
+    }
+
 
     public String getName() {
         return name;
