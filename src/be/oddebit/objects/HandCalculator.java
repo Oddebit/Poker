@@ -24,12 +24,13 @@ public class HandCalculator {
         this.player = player;
         this.dealer = table.dealer;
 
-
         boardTranslation();
 
-        setBestHand();
-    }
 
+        setBestHand();
+
+//        player.setBestHand(bestHand);
+    }
 
     private void boardTranslation() {
 
@@ -59,16 +60,24 @@ public class HandCalculator {
 
     public void setBestHand() {
 
-        addStraightFlush(checkStraightFlush());
-        addFourOfAKind(checkFourOfAKind());
-        addFullHouse(checkFullHouse());
-        addFlush(checkFlush());
-        addStraight(checkStraight());
-        addThreeOfAKind(checkThreeOfAKind());
-        addPairs(checkPairs());
-        addHighCard();
+        if (checkStraightFlush() != -1) {
+            addStraightFlush(checkStraightFlush());
+        } else if (checkFourOfAKind() != -1) {
+            addFourOfAKind(checkFourOfAKind());
+        } else if (checkFullHouse()[0] != -1 && checkFullHouse()[1] != -1) {
+            addFullHouse(checkFullHouse());
+        } else if (checkFlush() != -1) {
+            addFlush(checkFlush());
+        } else if (checkStraight() != -1) {
+            addStraight(checkStraight());
+        } else if (checkThreeOfAKind() != -1) {
+            addThreeOfAKind(checkThreeOfAKind());
+        } else if (checkPairs().size() > 0) {
+            addPairs(checkPairs());
+        } else {
+            addHighCard(5);
+        }
 
-        player.setBestHand(bestHand);
     }
 
 
@@ -108,16 +117,19 @@ public class HandCalculator {
 
             Terminal.sayStraightFlush(player, new Card(value + 1, 0).getFace());
 
-            for (int v = value; v >= value - 4; v--) {
+            player.setHandCode(0, 8);
+            player.setHandCode(1, value + 1);
 
-                for (int i = 0; i < 4; i++) {
-
-                    if (gameBoard[i][v] == 1) {
-                        bestHand.add(0, new Card(v + 1, i + 1));
-                        break;
-                    }
-                }
-            }
+//            for (int v = value; v >= value - 4; v--) {
+//
+//                for (int i = 0; i < 4; i++) {
+//
+//                    if (gameBoard[i][v] == 1) {
+//                        bestHand.add(0, new Card(v + 1, i + 1));
+//                        break;
+//                    }
+//                }
+//            }
         }
     }
 
@@ -144,11 +156,15 @@ public class HandCalculator {
         if (value != -1) {
 
             Terminal.sayFourOfAKind(player, new Card(value + 1, 0).getFace());
+            player.setHandCode(0, 7);
+            player.setHandCode(1, value + 1);
 
-            for (int s = 0; s < 4; s++) {
+//            for (int s = 0; s < 4; s++) {
+//
+//                bestHand.add(0, new Card(value + 1, s + 1));
+//            }
 
-                bestHand.add(0, new Card(value + 1, s + 1));
-            }
+            addHighCard(1);
         }
     }
 
@@ -160,7 +176,7 @@ public class HandCalculator {
         int pair = checkPairs().size() > 0 ? checkPairs().get(0) : -1;
 
         if (threeOfAKind != -1 && pair != -1) {
-            return new int[]{threeOfAKind, pair};
+            return new int[] {threeOfAKind, pair};
         }
 
         return new int[]{-1, -1};
@@ -170,9 +186,14 @@ public class HandCalculator {
 
         if (values[0] != -1 && values[1] != -1) {
 
-            addThreeOfAKind(values[0]);
-            addPairs(checkPairs());
             Terminal.sayFullHouse(player, new Card(values[0] + 1, 0).getFace(), new Card(values[1] + 1, 0).getFace());
+
+            player.setHandCode(0, 6);
+            player.setHandCode(1, values[0]);
+            player.setHandCode(2, values[1]);
+
+//            addThreeOfAKind(values[0]);
+//            addPairs(checkPairs());
         }
     }
 
@@ -199,13 +220,18 @@ public class HandCalculator {
         if (suit != -1) {
 
             Terminal.sayFlush(player, new Card(0, suit + 1).getSuit());
+            player.setHandCode(0, 5);
 
             int v = 12;
+            int count = 0;
             while (bestHand.size() < 5) {
 
                 if (gameBoard[suit][v] == 1) {
 
+                    player.setHandCode(count + 1, gameBoard[suit][v] + 1);
                     bestHand.add(0, new Card(v + 1, suit + 1));
+
+                    count++;
                 }
                 v--;
             }
@@ -248,17 +274,20 @@ public class HandCalculator {
         if (value != -1) {
 
             Terminal.sayStraight(player, new Card(value + 1, 0).getFace());
+            player.setHandCode(0, 4);
+            player.setHandCode(1, value + 1);
 
-            for (int v = value; v >= value - 4; v--) {
 
-                for (int i = 0; i < 4; i++) {
-
-                    if (gameBoard[i][v] == 1) {
-                        bestHand.add(0, new Card(v + 1, i + 1));
-                        break;
-                    }
-                }
-            }
+//            for (int v = value; v >= value - 4; v--) {
+//
+//                for (int i = 0; i < 4; i++) {
+//
+//                    if (gameBoard[i][v] == 1) {
+//                        bestHand.add(0, new Card(v + 1, i + 1));
+//                        break;
+//                    }
+//                }
+//            }
         }
     }
 
@@ -285,6 +314,8 @@ public class HandCalculator {
         if (value != -1) {
 
             Terminal.sayThreeOfAKind(player, new Card(value + 1, 0).getFace());
+            player.setHandCode(0, 3);
+            player.setHandCode(1, value + 1);
 
             for (int s = 0; s < 4; s++) {
 
@@ -294,6 +325,8 @@ public class HandCalculator {
 
                 }
             }
+
+            addHighCard(2);
         }
     }
 
@@ -303,11 +336,11 @@ public class HandCalculator {
 
         ArrayList<Integer> pairs = new ArrayList<>();
 
-        for (int v = 12; v >= 0; v--) {
+        for (int v = 12; v >= 0 && pairs.size() < 2; v--) {
 
             if (gameBoard[4][v] == 2) {
 
-                pairs.add(pairs.size(), v);
+                pairs.add(v);
             }
         }
 
@@ -316,45 +349,89 @@ public class HandCalculator {
 
     private void addPairs(ArrayList<Integer> values) {
 
-        int i = 0;
+        if (values.size() != 0) {
 
-        while (i < values.size() && bestHand.size() <= 3) {
+            if (values.size() == 2) {
 
-            Terminal.sayPairs(player, new Card(values.get(i) + 1, 0).getFace());
+                addHighCard(1);
+                player.setHandCode(0, 2);
 
-            for (int s = 0; s < 4; s++) {
+            } else if (values.size() == 1) {
 
-                if (gameBoard[s][values.get(i)] == 1) {
+                addHighCard(3);
+                player.setHandCode(0, 1);
 
-                    bestHand.add(0, new Card(values.get(i) + 1, s + 1));
-                }
             }
 
-            i++;
+            for (int i = 0; i < 2; i++) {
+
+                if (i < values.size()) {
+
+                    Terminal.sayPair(player, new Card(values.get(i) + 1, 0).getFace());
+                    player.setHandCode(i + 1, values.get(i) + 1);
+
+                } else {
+
+                    player.setHandCode(i + 1, -1);
+                }
+            }
         }
+
+
+        //        int i = 0;
+//
+//        while (i < values.size() && bestHand.size() <= 3) {
+//
+//            Terminal.sayPairs(player, new Card(values.get(i) + 1, 0).getFace());
+//
+//            for (int s = 0; s < 4; s++) {
+//
+//                if (gameBoard[s][values.get(i)] == 1) {
+//
+//                    bestHand.add(0, new Card(values.get(i) + 1, s + 1));
+//                }
+//            }
+//
+//            i++;
+//        }
     }
 
 
-    public void addHighCard() {
+
+
+    public void addHighCard(int n) {
 
         int v = 12;
-
-        while (bestHand.size() < 5) {
+        while (n > 0) {
 
             if (gameBoard[4][v] == 1) {
 
-                for (int s = 0; s < 4; s++) {
-
-                    if (gameBoard[s][v] == 1) {
-
-                        bestHand.add(bestHand.size(), new Card(v + 1, s + 1));
-
-                    }
-                }
+                player.setHandCode(6 - n, v + 1);
+                n--;
             }
 
             v--;
         }
+
+
+//        int v = 12;
+//
+//        while (bestHand.size() < 5) {
+//
+//            if (gameBoard[4][v] == 1) {
+//
+//                for (int s = 0; s < 4; s++) {
+//
+//                    if (gameBoard[s][v] == 1) {
+//
+//                        bestHand.add(bestHand.size(), new Card(v + 1, s + 1));
+//
+//                    }
+//                }
+//            }
+//
+//            v--;
+//        }
     }
 }
 

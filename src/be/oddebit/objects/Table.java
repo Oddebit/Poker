@@ -38,6 +38,7 @@ public class Table {
 
                 dealHand(dealer, 2);
                 revealCards(player, opponent);
+                compareHands();
             }
 
 
@@ -83,7 +84,7 @@ public class Table {
         switch (input) {
 
             case 1:
-                player.setStack(player.getStack() - player.getBet());
+                player.setStack((int) (player.getStack() - (1 / 2D) * player.getBet()));
                 return false;
 
             case 3:
@@ -108,7 +109,32 @@ public class Table {
         Terminal.printLine();
     }
 
+    public void compareHands() {
+
+        for (int i = 0; i < 6; i++) {
+            if (player.getHandCode(i) > opponent.getHandCode(i)) {
+                win();
+                return;
+            } else if (player.getHandCode(i) < opponent.getHandCode(i)) {
+                lose();
+                return;
+            }
+        }
+
+        Terminal.sayDraw();
+    }
+
     public String[][] getGameBoard() {
         return gameBoard;
+    }
+
+    public void win() {
+        Terminal.sayWin(player);
+        player.setStack(player.getStack() + player.getBet());
+    }
+
+    public void lose() {
+        Terminal.sayWin(opponent);
+        player.setStack(player.getStack() - player.getBet());
     }
 }

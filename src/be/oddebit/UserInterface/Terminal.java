@@ -1,11 +1,6 @@
 package be.oddebit.UserInterface;
 
-import be.oddebit.objects.Card;
-import be.oddebit.objects.HandCalculator;
 import be.oddebit.objects.Player;
-import be.oddebit.objects.Table;
-
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Terminal {
@@ -83,14 +78,24 @@ public class Terminal {
         System.out.println(player.getName() + " got three of a kind, " + face + "'s.");
     }
 
-    public static void sayPairs(Player player, String face) {
+    public static void sayTwoPairs(Player player, String face1, String face2) {
+
+        System.out.println(player.getName() + " got a pair of " + face1 + "'s and a pair of " + face2 + "'s.");
+    }
+
+    public static void sayPair(Player player, String face) {
 
         System.out.println(player.getName() + " got a pair of " + face + "'s.");
     }
 
-    public static void sayNothing() {
+    public static void sayWin(Player player) {
 
-        System.out.println("You got nothing. Cry like a poker player!");
+        System.out.println(player.getName() + " wins.");
+    }
+
+    public static void sayDraw() {
+
+        System.out.println("It's a draw.");
     }
 
     public static boolean askPlay() {

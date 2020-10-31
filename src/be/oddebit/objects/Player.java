@@ -12,6 +12,7 @@ public class Player {
     private int bet;
 
     private ArrayList<Card> bestHand;
+    private int[] handCode = new int[6];
 
 
     public Player(String name) {
@@ -24,6 +25,7 @@ public class Player {
     public void clearHand() {
 
         this.hand.clear();
+        Arrays.fill(this.handCode, 0);
     }
 
 
@@ -45,6 +47,10 @@ public class Player {
 
     public void setBestHand(ArrayList<Card> bestHand) {
         this.bestHand = bestHand;
+    }
+
+    public void setHandCode(int index, int value) {
+        this.handCode[index] = value;
     }
 
     // GETTERS
@@ -81,6 +87,13 @@ public class Player {
         return face;
     }
 
+    public int getHandCode(int index) {
+        return handCode[index];
+    }
+
+    public int[] getHandCode() {
+        return handCode;
+    }
 
     public String getName() {
         return name;
