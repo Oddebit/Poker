@@ -28,20 +28,20 @@ public class Table {
             dealHand(player, 2);
             dealHand(opponent, 2);
 
-            Terminal.showHand(player);
-            player.setBet(Terminal.askBet(player));
+//            Terminal.showHand(player);
+//            player.setBet(Terminal.askBet(player));
 
             dealHand(dealer, 3);
-            Terminal.showHand(dealer);
+//            Terminal.showHand(dealer);
 
-            if (foldCallRaise(Terminal.askFoldCallRaise())) {
+//            if (foldCallRaise(Terminal.askFoldCallRaise())) {
 
                 dealHand(dealer, 2);
                 revealCards(player, opponent);
                 compareHands();
-            }
-
-            play = Terminal.askPlay();
+//            }
+//
+//            play = Terminal.askPlay();
         }
     }
 

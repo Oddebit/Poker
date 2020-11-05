@@ -97,7 +97,7 @@ public class HandCalculator {
 
         } else {
 
-            addHighCard(5);
+            addHighCard(5, -1);
         }
     }
 
@@ -170,7 +170,7 @@ public class HandCalculator {
             player.setHandCode(0, 7);
             player.setHandCode(1, value + 2);
 
-            addHighCard(1);
+            addHighCard(1, value);
         }
     }
 
@@ -307,7 +307,7 @@ public class HandCalculator {
             player.setHandCode(0, 3);
             player.setHandCode(1, value + 2);
 
-            addHighCard(2);
+            addHighCard(2, value);
         }
     }
 
@@ -334,12 +334,12 @@ public class HandCalculator {
 
             if (values.size() == 2) {
 
-                addHighCard(1);
+                addHighCard(1, values.get(0), values.get(1));
                 player.setHandCode(0, 2);
 
             } else if (values.size() == 1) {
 
-                addHighCard(3);
+                addHighCard(3, values.get(0));
                 player.setHandCode(0, 1);
 
             }
@@ -366,13 +366,16 @@ public class HandCalculator {
             if (gameBoard[4][v] != 0) {
 
                 for (int i : inHand) {
+
                     if (v == i) {
 
-                        continue;
+                        break;
                     }
 
                     player.setHandCode(6 - n, v + 2);
                     n--;
+
+                    break;
                 }
             }
         }
