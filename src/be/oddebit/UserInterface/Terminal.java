@@ -1,5 +1,6 @@
 package be.oddebit.UserInterface;
 
+import be.oddebit.objects.Card;
 import be.oddebit.objects.Player;
 import java.util.Scanner;
 
@@ -63,9 +64,9 @@ public class Terminal {
         System.out.println(player.getName() + " got a full house, " + face1 + "'s over " + face2 + "'s.");
     }
 
-    public static void sayFlush(Player player, String suit) {
+    public static void sayFlush(Player player, Card card) {
 
-        System.out.println(player.getName() + " got a " + suit + " flush.");
+        System.out.println(player.getName() + " got a " + card.getFace() + "-high flush of " + card.getSuit() + ".");
     }
 
     public static void sayStraight(Player player, String face) {

@@ -15,6 +15,7 @@ public class Player {
     private int[] handCode = new int[6];
 
 
+    // CONSTRUCTOR
     public Player(String name) {
 
         this.name = name;
@@ -29,7 +30,7 @@ public class Player {
     }
 
 
-// SETTERS
+    // SETTERS
     public void setStack(int stack) {
 
         this.stack = stack;
@@ -53,6 +54,7 @@ public class Player {
         this.handCode[index] = value;
     }
 
+
     // GETTERS
     public int getStack() {
 
@@ -70,7 +72,7 @@ public class Player {
 
         for (Card card : this.hand) {
 
-            hand.add(card.getCard());
+            hand.add(card.toString());
         }
 
         return hand;

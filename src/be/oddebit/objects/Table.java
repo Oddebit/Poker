@@ -41,7 +41,6 @@ public class Table {
                 compareHands();
             }
 
-
             play = Terminal.askPlay();
         }
     }
@@ -71,7 +70,7 @@ public class Table {
                 if (gameBoard[suit][value] == null) {
 
                     gameBoard[suit][value] = player.getName();
-                    player.receivesCard(new Card(value + 1, suit + 1));
+                    player.receivesCard(new Card(value + 2, suit));
                     occupied = false;
                 }
             }
@@ -114,6 +113,7 @@ public class Table {
         for (int i = 0; i < 6; i++) {
             if (player.getHandCode(i) > opponent.getHandCode(i)) {
                 win();
+
                 return;
             } else if (player.getHandCode(i) < opponent.getHandCode(i)) {
                 lose();
