@@ -6,15 +6,13 @@ import java.util.Random;
 
 public class Player {
 
-    private ArrayList<Card> hand;
-
     private final String name;
     private double aggressiveness;
 
     private int stack;
     private int bet;
-    private boolean isPlaying;
 
+    private ArrayList<Card> hand;
     private ArrayList<Card> bestHand;
     private int[] handCode = new int[6];
 
@@ -26,7 +24,6 @@ public class Player {
         setAggressiveness(0,100);
         this.hand = new ArrayList<>();
         this.stack = 5000;
-        this.isPlaying = true;
     }
 
     public void clearHand() {
@@ -54,6 +51,7 @@ public class Player {
     public void setBet(int bet) {
 
         this.bet = bet;
+        this.stack -= bet;
     }
 
     public void setBestHand(ArrayList<Card> bestHand) {
@@ -75,9 +73,6 @@ public class Player {
         this.aggressiveness = min+(max-min)*(next-EMPIRICAL_MIN)/(EMPIRICAL_MAX-EMPIRICAL_MIN);
     }
 
-    public void setPlaying(boolean playing) {
-        isPlaying = playing;
-    }
 
     // GETTERS
     public int getStack() {
@@ -135,10 +130,6 @@ public class Player {
 
     public double getAggressiveness() {
         return aggressiveness;
-    }
-
-    public boolean isPlaying() {
-        return isPlaying;
     }
 
     public boolean isHandSuited() {

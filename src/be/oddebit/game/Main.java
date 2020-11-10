@@ -1,6 +1,5 @@
 package be.oddebit.game;
 
-import be.oddebit.UserInterface.Terminal;
 import be.oddebit.objects.Table;
 
 public class Main {

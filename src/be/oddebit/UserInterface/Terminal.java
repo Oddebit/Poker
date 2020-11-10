@@ -46,12 +46,12 @@ public class Terminal {
         return input;
     }
 
-    public static void sayOpponentCalls(Player player) {
+    public static void sayCall(Player player) {
 
         System.out.println(player.getName() + " calls.");
     }
 
-    public static void sayOpponentFolds(Player player) {
+    public static void sayFold(Player player) {
 
         System.out.println(player.getName() + " folds.");
     }

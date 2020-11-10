@@ -12,7 +12,6 @@ public class Table {
 
     private String[][] gameBoard;
     private int pot;
-    int bet;
 
     User user;
     Opponent[] opponents;
@@ -27,7 +26,7 @@ public class Table {
         this.opponents = new Opponent[opponents];
 
         for (int i = 0; i < opponents; i++) {
-            this.opponents[i] = new Opponent("Opponent" + i);
+            this.opponents[i] = new Opponent("Opponent " + i);
         }
 
         boolean play = true;
@@ -36,10 +35,10 @@ public class Table {
             newGame();
             dealHands();
 
-            bet();
+            proceedBets();
 
             if(allPlayers.size() < 2) {
-
+                win(allPlayers.get(0));
                 play = Terminal.askPlay();
                 continue;
             }
@@ -108,22 +107,24 @@ public class Table {
         }
     }
 
-    public void bet() {
+    public void proceedBets() {
 
+        ArrayList<Player> toRemove = new ArrayList<>();
         int minBet = 0;
         for (Player player : allPlayers) {
 
             int playerBet = player.bet(minBet);
-            boolean call = playerBet != -1;
             minBet = playerBet;
 
-            if (call) {
-                pot =+ bet;
-                Terminal.sayOpponentCalls(player);
+            if (playerBet != -1) {
+                pot =+ playerBet;
             } else {
-                allPlayers.remove(player);
-                Terminal.sayOpponentFolds(player);
+                toRemove.add(player);
             }
+        }
+
+        for (Player player : toRemove) {
+            allPlayers.remove(player);
         }
     }
 
@@ -161,19 +162,23 @@ public class Table {
 
     public void compareHands() {
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6 && allPlayers.size() > 1; i++) {
+
+            ArrayList<Player> toRemove = new ArrayList<>();
 
             int max = 0;
             for (Player player : allPlayers) {
-
                 max = Math.max(max, player.getHandCode(i));
             }
 
             for (Player player : allPlayers) {
-
                 if (player.getHandCode(i) < max) {
-                    allPlayers.remove(player);
+                    toRemove.add(player);
                 }
+            }
+
+            for (Player player : toRemove) {
+                allPlayers.remove(player);
             }
         }
 

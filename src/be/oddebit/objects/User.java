@@ -14,6 +14,7 @@ public class User extends Player{
         Terminal.showHand(this);
         int userBet = Terminal.askBet(this);
         this.setBet(userBet);
+        this.setStack(getStack() - bet);
         return userBet;
      }
 }

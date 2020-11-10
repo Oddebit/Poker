@@ -1,5 +1,6 @@
 package be.oddebit.objects;
 
+import be.oddebit.UserInterface.Terminal;
 import be.oddebit.game.Utility;
 
 public class Opponent extends Player {
@@ -26,9 +27,12 @@ public class Opponent extends Player {
 
         }
 
-        if (super.getAggressiveness() >= Utility.probabilityArray[y][x]) {
+        if (super.getAggressiveness() <= Utility.probabilityArray[y][x]) {
+            Terminal.sayCall(this);
+            this.setStack(getStack() - bet);
             return bet;
         } else {
+            Terminal.sayFold(this);
             return -1;
         }
     }
