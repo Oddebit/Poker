@@ -259,7 +259,7 @@ public class HandCalculator {
 
                     if (gameBoard[4][v2] > 0) {
                         count++;
-                        if (v2 == 0 && gameBoard[4][13] > 0) {
+                        if (v2 == 0 && gameBoard[4][12] > 0) {
                             count++;
                         }
                     } else {

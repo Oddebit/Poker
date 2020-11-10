@@ -40,7 +40,7 @@ public class Table {
                 revealCards(player, opponent);
                 compareHands();
 //            }
-//
+
 //            play = Terminal.askPlay();
         }
     }
