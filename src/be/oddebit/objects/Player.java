@@ -54,10 +54,6 @@ public class Player {
         this.stack -= bet;
     }
 
-    public void setBestHand(ArrayList<Card> bestHand) {
-        this.bestHand = bestHand;
-    }
-
     public void setHandCode(int index, int value) {
         this.handCode[index] = value;
     }

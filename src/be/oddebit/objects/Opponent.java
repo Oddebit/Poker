@@ -27,13 +27,17 @@ public class Opponent extends Player {
 
         }
 
-        if (super.getAggressiveness() <= Utility.probabilityArray[y][x]) {
+        if (this.getAggressiveness() <= Utility.probabilityArray[y][x]) {
+
             Terminal.sayCall(this);
             this.setStack(getStack() - bet);
             return bet;
+
         } else {
+
             Terminal.sayFold(this);
             return -1;
+
         }
     }
 }

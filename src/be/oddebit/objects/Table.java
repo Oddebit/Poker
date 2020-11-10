@@ -117,7 +117,7 @@ public class Table {
             minBet = playerBet;
 
             if (playerBet != -1) {
-                pot =+ playerBet;
+                pot += playerBet;
             } else {
                 toRemove.add(player);
             }

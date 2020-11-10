@@ -112,7 +112,7 @@ public class Terminal {
 
     public static void sayWin(Player player) {
 
-        System.out.println(player.getName() + " wins.");
+        System.out.println(player.getName() + " wins.\n");
     }
 
     public static void sayDraw(ArrayList<Player> players) {
