@@ -2,13 +2,14 @@ package be.oddebit.objects;
 
 public class Card {
 
+    private int value;
     private String face;
     private char suit;
 
 
     // CONSTRUCTOR
     public Card(int value, int suit) {
-
+        this.value = value;
         setFace(value);
         setSuit(suit);
     }
@@ -26,6 +27,10 @@ public class Card {
 
     public char getSuit() {
         return suit;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 
@@ -58,19 +63,19 @@ public class Card {
         switch (number) {
 
             case 11:
-                face = "J";
+                this.face = "J";
                 break;
 
             case 12:
-                face = "Q";
+                this.face = "Q";
                 break;
 
             case 13:
-                face = "K";
+                this.face = "K";
                 break;
 
             case 14:
-                face = "A";
+                this.face = "A";
                 break;
 
             default:
