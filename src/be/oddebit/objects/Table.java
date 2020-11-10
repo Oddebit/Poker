@@ -12,12 +12,14 @@ public class Table {
 
     private String[][] gameBoard;
     private int pot;
+    private int blind = 50;
 
     User user;
     Opponent[] opponents;
     Player dealer;
 
-    ArrayList<Player> allPlayers;
+    ArrayList<Player> activePlayers;
+    Player blindPlayer;
 
     public Table(String playerName, int opponents) {
 
@@ -26,7 +28,7 @@ public class Table {
         this.opponents = new Opponent[opponents];
 
         for (int i = 0; i < opponents; i++) {
-            this.opponents[i] = new Opponent("Opponent " + i);
+            this.opponents[i] = new Opponent("Jimmy Neutron");
         }
 
         boolean play = true;
@@ -37,8 +39,8 @@ public class Table {
 
             proceedBets();
 
-            if(allPlayers.size() < 2) {
-                win(allPlayers.get(0));
+            if(activePlayers.size() < 2) {
+                win(activePlayers.get(0));
                 play = Terminal.askPlay();
                 continue;
             }
@@ -70,9 +72,9 @@ public class Table {
         this.dealer.clearHand();
 
 
-        allPlayers = new ArrayList<>();
-        allPlayers.add(user);
-        allPlayers.addAll(Arrays.asList(this.opponents));
+        activePlayers = new ArrayList<>();
+        activePlayers.add(user);
+        activePlayers.addAll(Arrays.asList(this.opponents));
 
         gameBoard = new String[4][13];
         pot = 0;
@@ -109,9 +111,13 @@ public class Table {
 
     public void proceedBets() {
 
+//       blindPlayer.setBet(blind);
+//        int minBet = blind;
+
         ArrayList<Player> toRemove = new ArrayList<>();
+
         int minBet = 0;
-        for (Player player : allPlayers) {
+        for (Player player : activePlayers) {
 
             int playerBet = player.bet(minBet);
             minBet = playerBet;
@@ -124,7 +130,7 @@ public class Table {
         }
 
         for (Player player : toRemove) {
-            allPlayers.remove(player);
+            activePlayers.remove(player);
         }
     }
 
@@ -162,30 +168,30 @@ public class Table {
 
     public void compareHands() {
 
-        for (int i = 0; i < 6 && allPlayers.size() > 1; i++) {
+        for (int i = 0; i < 6 && activePlayers.size() > 1; i++) {
 
             ArrayList<Player> toRemove = new ArrayList<>();
 
             int max = 0;
-            for (Player player : allPlayers) {
+            for (Player player : activePlayers) {
                 max = Math.max(max, player.getHandCode(i));
             }
 
-            for (Player player : allPlayers) {
+            for (Player player : activePlayers) {
                 if (player.getHandCode(i) < max) {
                     toRemove.add(player);
                 }
             }
 
             for (Player player : toRemove) {
-                allPlayers.remove(player);
+                activePlayers.remove(player);
             }
         }
 
-        if (allPlayers.size() == 1) {
-            win(allPlayers.get(0));
+        if (activePlayers.size() == 1) {
+            win(activePlayers.get(0));
         } else {
-            draw(allPlayers);
+            draw(activePlayers);
         }
     }
 
